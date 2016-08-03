@@ -1,10 +1,8 @@
-# The Official raywenderlich.com Swift Style Guide.
+# The Official Connect Think Swift Style Guide.
 
 This style guide is different from others you may see, because the focus is centered on readability for print and the web. We created this style guide to keep the code in our books, tutorials, and starter kits nice and consistent — even though we have many different authors working on the books.
 
 Our overarching goals are conciseness, readability, and simplicity.
-
-Writing Objective-C? Check out our [Objective-C Style Guide](https://github.com/raywenderlich/objective-c-style-guide) too.
 
 ## Table of Contents
 
@@ -47,8 +45,6 @@ Writing Objective-C? Check out our [Objective-C Style Guide](https://github.com/
   * [Failing Guards](#failing-guards)
 * [Semicolons](#semicolons)
 * [Parenthesis](#parenthesis)
-* [Copyright Statement](#copyright-statement)
-* [Smiley Face](#smiley-face)
 * [Credits](#credits)
 
 
@@ -135,23 +131,6 @@ enum Shape {
 }
 ```
 
-### Prose
-
-When referring to functions in prose (tutorials, books, comments) include the required parameter names from the caller's perspective or `_` for unnamed parameters. Examples:
-
-> Call `convertPointAt(column:row:)` from your own `init` implementation.
->
-> If you call `dateFromString(_:)` make sure that you provide a string with the format "yyyy-MM-dd".
->
-> If you call `timedAction(afterDelay:perform:)` from `viewDidLoad()` remember to provide an adjusted delay value and an action to perform.
->
-> You shouldn't call the data source method `tableView(_:cellForRowAtIndexPath:)` directly.
-
-This is the same as the `#selector` syntax. When in doubt, look at how Xcode lists the method in the jump bar – our style here matches that.
-
-![Methods in Xcode jump bar](screens/xcode-jump-bar.png)
-
-
 ### Class Prefixes
 
 Swift types are automatically namespaced by the module that contains them and you should not add a class prefix such as RW. If two names from different modules collide you can disambiguate by prefixing the type name with the module name. However, only specify the module name when there is possibility for confusion which should be rare.
@@ -164,16 +143,16 @@ let myClass = MyModule.UsefulClass()
 
 ### Selectors
 
-Selectors are Obj-C methods that act as handlers for many Cocoa and Cocoa Touch APIs. Prior to Swift 2.2, they were specified using type unsafe strings. This now causes a compiler warning. The "Fix it" button replaces these strings with the **fully qualified** type safe selector. Often, however, you can use context to shorten the expression. This is the preferred style.
+Selectors are Obj-C methods that act as handlers for many Cocoa and Cocoa Touch APIs. Prior to Swift 2.2, they were specified using type unsafe strings. This now causes a compiler warning. The "Fix it" button replaces these strings with the **fully qualified** type safe selector. This is the preferred style.
 
 **Preferred:**
 ```swift
-let sel = #selector(viewDidLoad)
+let sel = #selector(ViewController.viewDidLoad)
 ```
 
 **Not Preferred:**
 ```swift
-let sel = #selector(ViewController.viewDidLoad)
+let sel = #selector(viewDidLoad)
 ```
 
 ### Generics
@@ -244,57 +223,23 @@ Since the compiler does not allow you to re-declare protocol conformance in a de
 
 For UIKit view controllers, consider grouping lifecyle, custom accessors, and IBAction in separate class extensions.
 
-### Unused Code
-
-Unused (dead) code, including Xcode template code and placeholder comments should be removed. An exception is when your tutorial or book instructs the user to use the commented code.
-
-Aspirational methods not directly associated with the tutorial whose implementation simply calls the super class should also be removed. This includes any empty/unused UIApplicationDelegate methods.
-
-**Not Preferred:**
-```swift
-override func didReceiveMemoryWarning() {
-   super.didReceiveMemoryWarning()
-  // Dispose of any resources that can be recreated.
-}
-
-override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-   // #warning Incomplete implementation, return the number of sections
-   return 1
-}
-
-override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-  // #warning Incomplete implementation, return the number of rows
-  return Database.contacts.count
-}
-
-```
-
-**Preferred:**
-```swift
-override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-  return Database.contacts.count
-}
-```
 ### Minimal Imports
 
 Keep imports minimal. For example, don't import `UIKit` when importing `Foundation` will suffice.
 
 ## Spacing
 
-* Indent using 2 spaces rather than tabs to conserve space and help prevent line wrapping. Be sure to set this preference in Xcode and in the Project settings as shown below:
-
-  ![Xcode indent settings](screens/indentation.png)
-  
-  ![Xcode Project settings](screens/project_settings.png)
-
+* Indent using 4 spaces rather than tabs to conserve space and help prevent line wrapping. Be sure to set this preference in Xcode and in the Project settings.
 * Method braces and other braces (`if`/`else`/`switch`/`while` etc.) always open on the same line as the statement but close on a new line.
+* `else` and `else if` code blocks should always start on a new line.
 * Tip: You can re-indent by selecting some code (or ⌘A to select all) and then Control-I (or Editor\Structure\Re-Indent in the menu). Some of the Xcode template code will have 4-space tabs hard coded, so this is a good way to fix that.
 
 **Preferred:**
 ```swift
 if user.isHappy {
   // Do something
-} else {
+} 
+else {
   // Do something else
 }
 ```
@@ -304,8 +249,7 @@ if user.isHappy {
 if user.isHappy
 {
   // Do something
-}
-else {
+} else {
   // Do something else
 }
 ```
@@ -334,7 +278,6 @@ When they are needed, use comments to explain **why** a particular piece of code
 
 Avoid block comments inline with code, as the code should be as self-documenting as possible. *Exception: This does not apply to those comments used to generate documentation.*
 
-
 ## Classes and Structures
 
 ### Which one to use?
@@ -351,7 +294,8 @@ Here's an example of a well-styled class definition:
 
 ```swift
 class Circle: Shape {
-  var x: Int, y: Int
+  var x: Int
+  var y: Int
   var radius: Double
   var diameter: Double {
     get {
@@ -389,7 +333,7 @@ class Circle: Shape {
 The example above demonstrates the following style guidelines:
 
  + Specify types for properties, variables, constants, argument declarations and other statements with a space after the colon but not before, e.g. `x: Int`, and `Circle: Shape`.
- + Define multiple variables and structures on a single line if they share a common purpose / context.
+ + Do not define multiple variables and structures on a single line even if they share a common purpose / context.
  + Indent getter and setter definitions and property observers.
  + Don't add modifiers such as `internal` when they're already the default. Similarly, don't repeat the access modifier when overriding a method.
 
@@ -537,8 +481,6 @@ let width: NSNumber = 120.0                          // NSNumber
 let widthString: NSString = width.stringValue        // NSString
 ```
 
-In Sprite Kit code, use `CGFloat` if it makes the code more succinct by avoiding too many conversions.
-
 ### Constants
 
 Constants are defined using the `let` keyword, and variables with the `var` keyword. Always use `let` instead of `var` if the value of the variable will not change.
@@ -568,15 +510,13 @@ let pi = 3.141592653589793238462643
 radius * pi * 2 // is pi instance data or a global constant?
 ```
 
-### Static Methods and Variable Type Properties
-
-Static methods and type properties work similarly to global functions and global variables and should be used sparingly. They are useful when functionality is scoped to a particular type or when Objective-C interoperability is required.
-
 ### Optionals
 
-Declare variables and function return types as optional with `?` where a nil value is acceptable.
+`!` can only be used for the not equal to operator `!=` or for instance variables that you know will be initialized later before use, such as subviews that will be set up in `viewDidLoad`. 
 
-Use implicitly unwrapped types declared with `!` only for instance variables that you know will be initialized later before use, such as subviews that will be set up in `viewDidLoad`.
+In 90% of all cases you should not be using a `!`. WHEN YOU USE A `!` YOU WILL BE REQUIRED TO EXPLAIN THE REASONING IN THE CODE REVIEW!!!
+
+Declare variables and function return types as optional with `?` where a nil value is acceptable.
 
 When accessing an optional value, use optional chaining if the value is only accessed once or if there are many optionals in the chain:
 
@@ -594,7 +534,7 @@ if let textContainer = self.textContainer {
 
 When naming optional variables and properties, avoid naming them like `optionalString` or `maybeView` since their optional-ness is already in the type declaration.
 
-For optional binding, shadow the original name when appropriate rather than using names like `unwrappedView` or `actualLabel`.
+For optional binding, shadow the original name when appropriate rather than using names like `unwrappedView` or `safeLabel`.
 
 **Preferred:**
 ```swift
@@ -602,7 +542,7 @@ var subview: UIView?
 var volume: Double?
 
 // later on...
-if let subview = subview, volume = volume {
+if let subview = unwrappedSubview, safeVolume = volume {
   // do something with unwrapped subview and volume
 }
 ```
@@ -612,8 +552,8 @@ if let subview = subview, volume = volume {
 var optionalSubview: UIView?
 var volume: Double?
 
-if let unwrappedSubview = optionalSubview {
-  if let realVolume = volume {
+if let subview = optionalSubview {
+  if let volume = volume {
     // do something with unwrappedSubview and realVolume
   }
 }
@@ -680,22 +620,19 @@ let names = [String]()
 
 #### Type Annotation for Empty Arrays and Dictionaries
 
-For empty arrays and dictionaries, use type annotation. (For an array or dictionary assigned to a large, multi-line literal, use type annotation.)
+Do not use type annotation.
 
 **Preferred:**
-```swift
-var names: [String] = []
-var lookup: [String: Int] = [:]
-```
-
-**Not Preferred:**
 ```swift
 var names = [String]()
 var lookup = [String: Int]()
 ```
 
-**NOTE**: Following this guideline means picking descriptive names is even more important than before.
-
+**Not Preferred:**
+```swift
+var names: [String] = []
+var lookup: [String: Int] = [:]
+```
 
 ### Syntactic Sugar
 
@@ -776,11 +713,11 @@ resource.request().onComplete { [weak self] response in
 
 ## Access Control
 
-Full access control annotation in tutorials can distract from the main topic and is not required. Using `private` appropriately, however, adds clarity and promotes encapsulation. Use `private` as the leading property specifier. The only things that should come before access control are the `static` specifier or attributes such as `@IBAction` and `@IBOutlet`.
+Full access control annotation is required at all times. Use `public`/`internal`/`private` as the leading property specifier. The only things that should come before access control are attributes such as `@IBAction` and `@IBOutlet`.
 
 **Preferred:**
 ```swift
-class TimeMachine {  
+public class TimeMachine {  
   private dynamic lazy var fluxCapacitor = FluxCapacitor()
 }
 ```
@@ -831,6 +768,7 @@ while i < attendeeList.count {
   i += 1
 }
 ```
+
 ## Golden Path
 
 When coding with conditionals, the left hand margin of the code should be the "golden" or "happy" path. That is, don't nest `if` statements. Multiple return statements are OK. The `guard` statement is built for this.
@@ -922,62 +860,21 @@ let swift = "not a scripting language";
 
 ## Parenthesis
 
-Parenthesis around conditionals are not required and should be omitted.
+Parentheses around conditionals are required.
 
 **Preferred:**
-```swift
-if name == "Hello" {
-  print("World")
-}
-```
-
-**Not Preferred:**
 ```swift
 if (name == "Hello") {
   print("World")
 }
 ```
 
-## Copyright Statement
-
-The following copyright statement should be included at the top of every source
-file:
-
-    /**
-     * Copyright (c) 2016 Razeware LLC
-     *
-     * Permission is hereby granted, free of charge, to any person obtaining a copy
-     * of this software and associated documentation files (the "Software"), to deal
-     * in the Software without restriction, including without limitation the rights
-     * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-     * copies of the Software, and to permit persons to whom the Software is
-     * furnished to do so, subject to the following conditions:
-     *
-     * The above copyright notice and this permission notice shall be included in
-     * all copies or substantial portions of the Software.
-     *
-     * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-     * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-     * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-     * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-     * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-     * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-     * THE SOFTWARE.
-     */
-
-## Smiley Face
-
-Smiley faces are a very prominent style feature of the raywenderlich.com site! It is very important to have the correct smile signifying the immense amount of happiness and excitement for the coding topic. The closing square bracket `]` is used because it represents the largest smile able to be captured using ASCII art. A closing parenthesis `)` creates a half-hearted smile, and thus is not preferred.
-
-**Preferred:**
-```
-:]
-```
-
 **Not Preferred:**
+```swift
+if name == "Hello" {
+  print("World")
+}
 ```
-:)
-```  
 
 ## Credits
 
